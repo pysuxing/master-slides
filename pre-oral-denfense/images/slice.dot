@@ -1,0 +1,10 @@
+digraph G {
+        node [shape=record];
+
+        in[label="a[0] | ... | <p0> a[k] | a[k+1] | <p1> a[k+2] | ... | a[2k-1] | <p2> a[2k] | ... | a[n]"];
+        out[label="<p0> a[k] | <p1> a[k+2] | ...|  <p2> a[2k] |"];
+        
+        in:p0 -> out:p0;
+        in:p1 -> out:p1;
+        in:p2 -> out:p2;
+}

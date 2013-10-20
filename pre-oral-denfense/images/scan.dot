@@ -1,0 +1,12 @@
+digraph G {
+        node [shape=record];
+        edge [label="f"];
+
+        in[label="a[0] | a[1] | a[2] | a[3] | ... | a[4]"];
+        out[label="a[0] | a[0]+a[1] | ..."];
+        in:p0 -> out:p0;
+        in:p1 -> out:p1;
+        in:p2 -> out:p2;
+        in:p3 -> out:p3;
+        in:p4 -> out:p4;
+}

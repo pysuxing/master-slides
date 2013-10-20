@@ -1,0 +1,28 @@
+digraph g {
+        node [shape=ellipse];
+
+        res[label="res"];
+        fold[label="fold"];
+        plus[label="+"];
+        t1[label="", shape=point, color=red];
+        map[label="map"];
+        t2[label="", shape=point];
+        t3[label="", shape=point, color=red];
+        uncurry[label="uncurry"];
+        mul[label="*"];
+        zip[label="zip"];
+        v1[label="v1"];
+        v2[label="v2"];
+
+        res -> fold;
+        res -> plus;
+        res -> t1;
+        t1 -> map;
+        t1 -> t2;
+        t1 -> t3;
+        t2 -> uncurry;
+        t2 -> mul;
+        t3 -> zip;
+        t3 -> v1;
+        t3 -> v2;
+}

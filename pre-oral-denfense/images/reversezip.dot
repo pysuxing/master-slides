@@ -1,0 +1,14 @@
+digraph G {
+        result[label="[reuse in1's memory]", fontcolor=red];
+        reverse;
+        t1[label="[new memory]", fontcolor=red];
+        zipWith;
+        in1;
+        in2;
+
+        result -> reverse;
+        result -> t1;
+        t1 -> zipWith;
+        t1 -> in1;
+        t1 -> in2;
+}

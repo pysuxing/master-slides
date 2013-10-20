@@ -1,0 +1,27 @@
+digraph g {
+        node [shape=ellipse];
+        result;
+        sqrt;
+        t1[shape=diamond, label=""];
+        plus[label="+"]
+        t2[shape=diamond, label=""];
+        t3[shape=diamond, label=""];
+        mul1[label="*"];
+        x1[label="x"];
+        x2[label="x"];
+        mul2[label="*", style=filled, fillcolor=gray];
+        y1[label="y"];
+        y2[label="y"];
+
+        result -> sqrt;
+        result -> t1;
+        t1 -> plus;
+        t1 -> t2;
+        t1 -> t3;
+        t2 -> mul1;
+        t2 -> x1;
+        t2 -> x2;
+        t3 -> mul2;
+        t3 -> y1;
+        t3 -> y2;
+}

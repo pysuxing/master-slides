@@ -1,0 +1,13 @@
+digraph G {
+        node [shape=record];
+
+        idx[label="0\ \ \  | <p0> 1\ \ \  | <p1> 1\ \ \  | 0\ \ \  | <p2> 1\ \ \ "];
+        in[label="a[0] | <p0> a[1] | <p1> a[2] | a[3] | <p2> a[4]"];
+        out[label="<p0> a[1] | <p1> a[2] | <p2> a[4]"];
+        idx:p0 -> in:p0;
+        idx:p1 -> in:p1;
+        idx:p2 -> in:p2;
+        in:p0 -> out:p0;
+        in:p1 -> out:p1;
+        in:p2 -> out:p2;
+}
