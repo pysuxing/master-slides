@@ -10,7 +10,7 @@ digraph G {
         others[label="Other\nAccelerators"];
 
         vm -> rt;
-        rt -> driver;
+        vm -> driver;
         rt -> scheduler;
         rt -> rm;
         driver -> cpu;

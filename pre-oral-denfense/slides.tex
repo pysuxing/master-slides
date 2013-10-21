@@ -12,7 +12,7 @@
 \usepackage{listings}
 \lstset{basicstyle=\ttfamily\small}
 %% meta info
-\title{Rat: 一种函数式并行程序语言}
+\title{Rat: 函数式并行程序语言研究}
 \author[苏醒~pysuxing@gmail.com]{
 \begin{tabular}{ll}
 答辩人： & 苏醒 \\
@@ -50,9 +50,10 @@
       \pause
     \item 语言的编译实现
       \begin{itemize}
+        \item 并行虚拟机：适应GPU硬件结构的并行虚拟机
         \item 异构硬件：CPU与GPU的协同工作技术研究
-        \item Runtime System：内存管理、线程管理、任务划分等并行细节自动化技术
-        \item GPU优化：存储空间优化以及GPU片上共享存储器的优化技术
+        \item 并行自动化：内存管理、线程管理、任务划分等并行自动化技术研究
+        \item GPU端优化：存储空间优化以及GPU片上共享存储器的优化技术研究
       \end{itemize}
   \end{itemize}
 \end{frame}
@@ -135,14 +136,14 @@
   %% \end{block}
 \end{frame}
 
-\begin{frame}
-  \frametitle{type class实例}
-  以0为幺元，加法运算为结合律二元运算的 Float 上的幺半群
-  \lstinputlisting[language=Haskell]{listings/frag-1.hs}
-  \pause
-  type class的另一作用：为可并行化操作提供约束。
-  \lstinputlisting[language=Haskell]{listings/frag-2.hs}
-\end{frame}
+%% \begin{frame}
+%%   \frametitle{type class实例}
+%%   以0为幺元，加法运算为结合律二元运算的 Float 上的幺半群
+%%   \lstinputlisting[language=Haskell]{listings/frag-1.hs}
+%%   \pause
+%%   type class的另一作用：为可并行化操作提供约束。
+%%   \lstinputlisting[language=Haskell]{listings/frag-2.hs}
+%% \end{frame}
 
 \subsection{函数式语言特性：强大的抽象表达能力}
 \frame{\tableofcontents[currentsection, currentsubsection]}
@@ -290,13 +291,23 @@
 \end{frame}
 
 %% chap 3
-\section{实现技术}
+\section{编译实现}
 \frame{\tableofcontents[currentsection]}
-\subsection{前端处理流程}
+\subsection{并行虚拟机}
 \frame{\tableofcontents[currentsection, currentsubsection]}
+
 \begin{frame}
-  \frametitle{源程序分析}
-  \framesubtitle{level-1~语法树}
+  \frametitle{前端处理流程}
+  前端处理即源程序的分析过程
+  \begin{figure}
+    \caption{Rat前端处理流程}
+    \includegraphics<1>[scale=0.3]{images/frontend.png}
+    \includegraphics<2>[scale=0.3]{images/frontend-core.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{level-1~语法树}
   level-1 语法树即为源程序树，包括以下结点类型：
   \begin{table}
     \caption{level-1 语法树的结点类型}
@@ -315,8 +326,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{源程序分析}
-  \framesubtitle{level-2~语法树}
+  \frametitle{level-2~语法树}
   由 level-1 语法树变换得到的 level-2 语法树结构更为简化。
   \begin{table}
     \caption{level-2 语法树的结点类型}
@@ -331,54 +341,70 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Core语言}
-  Rat核心语言Core，将 level-2 语法树中的柯里化（curried）函数变换为
+  \frametitle{并行虚拟机---Core语言}
+  Rat并行虚拟机上运行Core语言。Core语法树的结点类型与level-2语法树相同，区别在于所有柯里化（curried）函数变换为
   反柯里化（uncurried）形式。程序的优化与翻译在Core语言上执行。
+  \begin{itemize}
+    \item 翻译\\
+      由Core语法树生成并行虚拟机指令序列，并行虚拟机指令进一步翻译为C代码。
+    \item 优化\\
+      优化过程是Core到Core的转换器，应用一定的规则优化代码。Core语法树可以执行多轮优化。
+  \end{itemize}
+  %% \begin{table}
+  %%   \caption{Core 语法树的结点类型（同level-1语法树）}
+  %%   \begin{tabular}{|l|l|l|}
+  %%     \hline
+  %%     literal & variable-ref & function-app\\
+  %%     \hline
+  %%     lambda-exp & conditional &\\
+  %%     \hline
+  %%   \end{tabular}
+  %% \end{table}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Core语言}
-  \begin{block}{实例：求解向量内积}
-    \lstinputlisting[language=Haskell]{listings/frag-11.hs}
-  \end{block}
-  \begin{figure}
-    \caption{level-2语法树到Core语言语法树的变换}
-    \includegraphics[scale=0.2]{images/level-2-tree.png}
-    \pause
-    \includegraphics[scale=0.2]{images/core-tree.png}
-  \end{figure}
-\end{frame}
+%% \begin{frame}
+%%   \frametitle{并行虚拟机---Core语言}
+%%   \begin{block}{实例：求解向量内积}
+%%     \lstinputlisting[language=Haskell]{listings/frag-11.hs}
+%%   \end{block}
+%%   \begin{figure}
+%%     \caption{level-2语法树到Core语言语法树的变换}
+%%     \includegraphics[scale=0.2]{images/level-2-tree.png}
+%%     \pause
+%%     \includegraphics[scale=0.2]{images/core-tree.png}
+%%   \end{figure}
+%% \end{frame}
 
 \begin{frame}
-  \frametitle{Core语言的翻译}
-  Core语言运行于Rat虚拟机之上。Rat虚拟机抽象层次较高，它的基本
-  指令由Rat的内建标量函数与向量原语VP组成。
+  \frametitle{并行虚拟机---Core语言}
+  Core语言运行于并行虚拟机之上，并行虚拟机抽象层次较高，它的基本
+  指令由标量原语SP与向量原语VP组成。
   \begin{itemize}
     \item 标量原语SP\\
       \texttt{+, -, *, /, mod, exp, sqrt, ...}
     \item 向量原语VP\\
       \texttt{map, scan, permute, slice, compact, sparse, sort, zip, random}
   \end{itemize}
+  这些原语在GPU等硬件加速器上可以有高效实现。
 \end{frame}
 
 \begin{frame}
   \frametitle{Core语言的翻译}
   \begin{block}{实例：求单精度浮点复数的模}
     $C=x+yi$\hspace{3cm}$\Vert C \Vert = \sqrt{x^2+y^2}$
+    \lstinputlisting[language=Haskell]{listings/frag-15.hs}
   \end{block}
   \pause
-  \lstinputlisting[language=Haskell]{listings/frag-15.hs}
-  \pause
   \begin{figure}
-    \caption{复数求模函数的Core树}
+    \caption{复数求模函数的Core语法树}
     \includegraphics[scale=0.2]{images/complex-length.png}
   \end{figure}
 \end{frame}
 
 \begin{frame}[t]
-  \frametitle{Core语言虚拟机}
-  以原语操作为基本指令的虚拟机。
-
+  \frametitle{Core语言的翻译}
+  \framesubtitle{并行虚拟机stack machine}
+  Core语言并行虚拟机可以用简单的stack machine实现。
   \only<1>{
     \includegraphics[scale=0.25]{images/vm-1.png}
     \hspace{.3in}
@@ -482,16 +508,16 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Core虚拟机的实现}
+  \frametitle{Core语言的翻译}
   \framesubtitle{标量原语SP的翻译}
-  内建标量函数被直接翻译成C表达式或函数调用
+  标量原语被直接翻译成C表达式或函数调用
 
   \texttt{+ a b $\rightarrow$  (a + b)}\\
   \texttt{exp n $\rightarrow$ exp(n)}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Core虚拟机的实现}
+  \frametitle{Core语言的翻译}
   \framesubtitle{向量原语VP的翻译}
   向量原语VP的翻译过程采用原语框架实例化实现。
   \begin{itemize}
@@ -514,10 +540,8 @@
   \lstinputlisting[language=C]{listings/map-instance.c}
 \end{frame}
 
-\subsection{前端优化技术}
-\frame{\tableofcontents[currentsection, currentsubsection]}
 \begin{frame}
-  \frametitle{优化技术}
+  \frametitle{Core语言的优化}
   Rat程序的优化技术简历在Core语言之上。主要的优化技术包括：
   \begin{itemize}
     \item 存储空间优化
@@ -571,22 +595,14 @@
   \end{table}
 \end{frame}
 
-%% \begin{frame}
-%%   \frametitle{存储空间优化}
-%%   \framesubtitle{向量literal免初始化}
-%%   某些VP的调用中，出现在特定位置的向量literal可以不用初始化内存空间。\\
-%%   \texttt{b = map f [1 .. 10000]}\\
-%%   FIXME：这一张可以删掉
-%% \end{frame}
-
 \begin{frame}[t]
   \frametitle{向量原语聚合~VP fusion}
   向量原语聚合旨在合并相邻的VP，以提高执行效率。
   \lstinputlisting[language=Haskell]{listings/frag-12.hs}
   \begin{figure}
     \caption{VP fusion实例}
-    \includegraphics<1>[scale=0.4]{images/vp-fusion-1.png}
-    \includegraphics<2>[scale=0.4]{images/vp-fusion-2.png}
+    \includegraphics<1>[scale=0.35]{images/vp-fusion-1.png}
+    \includegraphics<2>[scale=0.35]{images/vp-fusion-2.png}
   \end{figure}
 \end{frame}
 
@@ -596,25 +612,99 @@
   \lstinputlisting[language=Haskell]{listings/frag-12.hs}
   \begin{figure}
     \caption{VP reorder实例}
-    \includegraphics<1>[scale=0.4]{images/vp-reorder-1.png}
-    \includegraphics<2>[scale=0.4]{images/vp-reorder-2.png}
+    \includegraphics<1>[scale=0.33]{images/vp-reorder-1.png}
+    \includegraphics<2>[scale=0.35]{images/vp-reorder-2.png}
   \end{figure}
 \end{frame}
 
-\subsection{后端实现技术}
+\subsection{异构硬件协同技术}
 \frame{\tableofcontents[currentsection, currentsubsection]}
 
 \begin{frame}
-  \frametitle{Rat后端实现方案}
+  \frametitle{异构硬件系统}
+  异构硬件系统在超级计算级、桌面计算机甚至移动计算设备中都已经成为主流趋势。
   \begin{figure}
-    \caption{Rat后端结框图}
-    \includegraphics<1>[scale=0.3]{images/backend.png}
-    \includegraphics<2>[scale=0.3]{images/backend-gpu.png}
+    \caption{典型的异构系统：CPU+GPU}
+    \includegraphics[scale=0.6]{images/heterogeneous-arch.png}
   \end{figure}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Runtime System}
+  \frametitle{CPU/GPU并行执行}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      为了提高整个程序的并行度，在硬件允许的情况下，尽量使CPU与GPU同时工作。
+      \begin{itemize}
+        \item GPU端的kernel调用采用异步模式，允许CPU与GPU同时执行任务
+        \item Host-Device之间的数据传输与kernel同时执行
+        \item 多个kernel同时执行
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \includegraphics[scale=0.35]{images/heterogeneous-programming.png}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{子程序可并行性}
+  在保证纯函数特性的前提下，由lambda演算的理论可以保证一个程序的各个子程序执行
+  （一个表达式的子表达式的求值）顺序不影响最后结果。
+  \pause
+
+  \includegraphics[scale=0.25]{images/vm-1.png}
+  \pause
+
+  \texttt{push(x); push(x); multiply;\\}\pause
+  \texttt{push(y); push(y); multiply;\\}\pause
+  \texttt{plus; sqrt;}
+\end{frame}
+
+\begin{frame}
+  \frametitle{CPU/GPU并行执行}
+  \begin{itemize}
+    \item 静态标记\\
+      在编译期可以确定那些表达式的求值过程发生在GPU端（一般是向量运算），哪些表达式
+      求值发生在CPU端
+    \item 动态调度\\
+      在运行期，所有可用资源（GPU流、CPU线程等）由运行时系统统一管理调度。
+  \end{itemize}
+\end{frame}
+
+\subsection{并行自动化技术}
+\frame{\tableofcontents[currentsection, currentsubsection]}
+
+\begin{frame}
+  \frametitle{并行自动化技术}
+  传统的并行程序设计要求程序员显式地
+  \begin{itemize}
+    \item 划分任务，收集结果
+    \item 分配/回收内存
+    \item 创建/回收进（线）程
+    \item 消息传递（线程操作，共享数据等）
+  \end{itemize}
+  \pause
+  Rat采用了若干并行自动化技术来简化并行程序设计，通过一个Runtime System实现。
+  Rat Runtime System拥有以下能力
+  \begin{itemize}
+    \item 大任务划分/合并
+    \item 计算/存储资源动态管理
+    \item 负载平衡技术
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Rat Runtime System}
+  Rat的并行虚拟机运行在Runtime System之上。Rat后端结构如下图
+  \begin{figure}
+    \caption{Rat后端结构图}
+    \includegraphics[scale=0.3]{images/backend.png}
+    %% \includegraphics<2>[scale=0.3]{images/backend-gpu.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Rat Runtime System}
   \framesubtitle{Task Scheduler}
   Task Scheduler的功能：
   \begin{itemize}
@@ -626,79 +716,74 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Runtime System}
+  \frametitle{Rat Runtime System}
   \framesubtitle{Resource Manager}
-  Resource Manager的功能：
+  Resource Manager建立为所有可用资源建立“统一资源库”，它的职能包括    
   \begin{itemize}
-    \item 管理可用设备（CPU，GPU ...)
-    \item 管理向量内存的分配与回收
-    \item 对于标量内存执行采用垃圾回收机制
+    \item 管理所有可用设备（CPU，GPU ...)以及与之关联的存储器
+    \item 管理所有加速设备上的线程资源、流资源
+    \item 采用资源分配算法动态响应资源分配请求
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Runtime System}
-  \framesubtitle{VP Driver}
-  VP Driver是在不同硬件上定义的抽象功能接口，提供向量原语的具体实现。
-  \begin{figure}
-    \caption{Nvidia GPU线程模型}
-    \includegraphics[scale=0.4]{images/grid-of-thread-blocks.png}
-  \end{figure}
-\end{frame}
+%% \begin{frame}
+%%   \frametitle{Runtime System}
+%%   \framesubtitle{VP Driver}
+%%   VP Driver是在不同硬件上定义的抽象功能接口，提供向量原语的具体实现。
+%%   \begin{figure}
+%%     \caption{Nvidia GPU线程模型}
+%%     \includegraphics[scale=0.4]{images/grid-of-thread-blocks.png}
+%%   \end{figure}
+%% \end{frame}
 
-\begin{frame}
-  \frametitle{VP Driver的GPU实现}
-  对于Rat提供的向量原语，有的已经在CUDPP\footnote{http://code.google.com/p/cudpp/}中有高效实现。
-  剩余的原语的实现过程也比较直观。
-  \begin{table}
-    \caption{VP的GPU实现}
-    \begin{tabular}{|l|l||l|l|}
-      \hline
-      map & ratMap & scale & ratCopy\\
-      \hline
-      slice & ratCopy & scan & cudappScan\\
-      \hline
-      compact & cudppCompact & sort & cudppSort\\
-      \hline
-      sparse & ratCopy & zip & \\
-      \hline
-      permute & ratCopy & random & cudppRand\\
-      \hline
-    \end{tabular}
-  \end{table}
-\end{frame}
+%% \begin{frame}
+%%   \frametitle{VP Driver的GPU实现}
+%%   对于Rat提供的向量原语，有的已经在CUDPP\footnote{http://code.google.com/p/cudpp/}中有高效实现。
+%%   剩余的原语的实现过程也比较直观。
+%%   \begin{table}
+%%     \caption{VP的GPU实现}
+%%     \begin{tabular}{|l|l||l|l|}
+%%       \hline
+%%       map & ratMap & scale & ratCopy\\
+%%       \hline
+%%       slice & ratCopy & scan & cudappScan\\
+%%       \hline
+%%       compact & cudppCompact & sort & cudppSort\\
+%%       \hline
+%%       sparse & ratCopy & zip & \\
+%%       \hline
+%%       permute & ratCopy & random & cudppRand\\
+%%       \hline
+%%     \end{tabular}
+%%   \end{table}
+%% \end{frame}
 
-\subsection{后端优化技术}
+\subsection{GPU端优化技术}
 \frame{\tableofcontents[currentsection, currentsubsection]}
+
 \begin{frame}
-  \frametitle{后端优化技术}
+  \frametitle{GPU端优化技术}
   Rat的后端实现平台为Nvidia GPU，主要优化措施包括：
   \begin{itemize}
-    \item 子程序并行执行
-    \item GPU访存操作优化
+    \item 寄存器优化
+    \item 访存操作优化
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{子程序并行执行}
-  \begin{columns}
-    \begin{column}{0.5\textwidth}
-      为了提高整个程序的并行度，在硬件允许的情况下，尽量使CPU与GPU同时工作。
-      \begin{itemize}
-        \item GPU端的kernel调用采用异步模式
-        \item 重叠Host-Device之间的数据传输与kernel执行
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \includegraphics[scale=0.35]{images/heterogeneous-programming.png}
-    \end{column}
-  \end{columns}
-  \pause
-  \alert{“无副作用”}：可以任意选取子程序并行执行，不影响程序正确性。
+  \frametitle{寄存器优化}
+  kernel的局部变量位于register与local memory中，kernel的register占用量过高会影响可以同时执行的线程数。
+  \begin{figure}
+    \caption{复数求模函数的Core语法树}
+    \includegraphics<1>[scale=0.2]{images/complex-length.png}
+    \includegraphics<2>[scale=0.2]{images/complex-length-register.png}
+  \end{figure}
+  逻辑上，每个结点对应一个变量，应该分配一个寄存器。
+  但实际上，只需要两个浮点寄存器就可以满足该kernel的需要。
 \end{frame}
 
 \begin{frame}
-  \frametitle{GPU访存操作优化}
+  \frametitle{访存操作优化}
   要采用的访存优化措施主要包括：
   \begin{itemize}
     \item Coalesced Access to Global Memory
@@ -709,10 +794,11 @@
 \begin{frame}
   \frametitle{GPU访存操作优化}
   \framesubtitle{Coalesced Access to Global Memory}
-  GPU上对于global memory的Coalesced Access可以在一次L1 cache transection内完成。
+  GPU上对于global memory的Coalesced Access可以在一次L1 cache transaction内完成。
   \begin{itemize}
     \item 分配向量内存时对齐地址
     \item 分配kernel线程时匹配线程数目与数据块大小
+    \item padding技术，用更多的线程开销换带宽
   \end{itemize}
   \begin{figure}
     \includegraphics[scale=0.4]{images/coalesced-access.png}\\
@@ -731,33 +817,57 @@
 \end{frame}
 
 %% chap 4
-\section{课题状况}
+\section{课题进展}
 \frame{\tableofcontents[currentsection]}
+
 \begin{frame}
   \frametitle{Rat实现情况}
-  Rat语言的实现正处于工作当中……
-  \begin{table}
-    \caption{Rat 语言各个组件实现情况}
-    \begin{tabular}{|l|l|l|}
-      \hline
-      \multirow{3}{*}{前端} & Lexer & finished\\
-      \cline{2-3}
-      & Parser & finished\\
-      \cline{2-3}
-      & Type Checker & in progress\\
-      \hline
-      \multirow{3}{*}{后端} & Task Scheduler & in progress\\
-      \cline{2-3}
-      & Resource Manager & finished\\
-      \cline{2-3}
-      & \alert{VP Driver} & finished\\
-      \hline
-    \end{tabular}
-  \end{table}
+  \begin{itemize}
+    \item<1-> Rat语言后端的VP Driver, Task Scheduler, Resource Manager已完成，已经具备实验验证能力。
+    \item<2-> 前端的Type Checker正处于实现当中
+  \end{itemize}
+  %% Rat语言的实现正处于工作当中……
+  %% \begin{table}
+  %%   \caption{Rat 语言各个组件实现情况}
+  %%   \begin{tabular}{|l|l|l|}
+  %%     \hline
+  %%     \multirow{3}{*}{前端} & Lexer & finished\\
+  %%     \cline{2-3}
+  %%     & Parser & finished\\
+  %%     \cline{2-3}
+  %%     & Type Checker & in progress\\
+  %%     \hline
+  %%     \multirow{3}{*}{后端} & Task Scheduler & in progress\\
+  %%     \cline{2-3}
+  %%     & Resource Manager & finished\\
+  %%     \cline{2-3}
+  %%     & VP Driver & finished\\
+  %%     \hline
+  %%   \end{tabular}
+  %% \end{table}
 \end{frame}
 
 \begin{frame}
-  \Huge{the end}
+  \frametitle{不足与展望}
+  \begin{itemize}
+    \item Rat的不足
+      \begin{itemize}
+        \item 抽象层次太高，难以对具体问题实施具体优化
+        \item 将所有操作分解为向量操作，可能损失一些优化机会\\
+          如矩阵乘法中对于shared memory的优化
+        \item 只支持regular size的数据类型，不支持string
+      \end{itemize}
+    \item future work
+      \begin{itemize}
+        \item 对常用的科学计算程序提供内建的库
+        \item 研究Self Optimizing技术
+        \item 改进Task Scheduler与Resourse Manager的性能
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \Huge{thank you!}
 \end{frame}
 
 \end{document}
