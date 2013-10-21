@@ -43,16 +43,16 @@
   \begin{itemize}
     \item 并行程序语言的语法设计
       \begin{itemize}
-        \item 定位：Domain Specific Language
-        \item 目标：在保证效率的前提下提高易用性
-        \item 内容：类型系统，表达式种类，高阶特性
+        \item 定位：Domain Specific Language，适用于科学计算问题
+        \item 目标：在保证效率的前提下大大降低并行程序设计的难度
+        \item 内容：类型系统，向量原语，抽象能力
       \end{itemize}
       \pause
-    \item 语言的实现技术
+    \item 语言的编译实现
       \begin{itemize}
-        \item Runtime System：为内存管理、线程管理、任务划分等并行细节提供支持
-        \item 异构硬件的利用：CPU与GPU的协同工作
-        \item 优化措施：存储器优化以及GPU片上共享存储器的优化
+        \item 异构硬件：CPU与GPU的协同工作技术研究
+        \item Runtime System：内存管理、线程管理、任务划分等并行细节自动化技术
+        \item GPU优化：存储空间优化以及GPU片上共享存储器的优化技术
       \end{itemize}
   \end{itemize}
 \end{frame}
@@ -60,7 +60,7 @@
 %% chap 2
 \section{语言设计}
 \frame{\tableofcontents[currentsection]}
-\subsection{引子：并行问题实例}
+\subsection{引子：一个经典并行问题}
 \frame{\tableofcontents[currentsection, currentsubsection]}
 \begin{frame}[t]
   \frametitle{并行程序设计实例：向量内积}
@@ -70,25 +70,38 @@
   \end{block}
 
   \only<2>{
-    %% \begin{block}{C语言顺序实现}
     C语言顺序实现
     \lstinputlisting[language=C]{listings/dot-c.c}
-    %% \end{block}
   }
   \only<3>{
-    %% \begin{block}{Rat实现}
     Rat实现
     \lstinputlisting[language=Haskell]{listings/dot-rat.hs}
-    %% \end{block}
   }
 \end{frame}
 
-\subsection{类型系统}
+\subsection{类型系统：实用性与安全性}
 \frame{\tableofcontents[currentsection, currentsubsection]}
 
 \begin{frame}
-  \frametitle{Rat的数据类型}
-  Rat 采用静态数据类型系统，执行编译期类型检查（FIXME：这里的举例结合矩阵乘法的例子）
+  \frametitle{安全性}
+  \framesubtitle{编译期强类型检查}
+  Rat是静态强类型语言，这与解决“科学计算问题”的定位相适应。
+  \begin{itemize}
+    \item 静态类型检查：降低动态类型检查开销
+    \item 强类型检查：提高运行期安全性
+    \begin{itemize}
+      \item 所有函数（数据）的类型皆在编译期确定
+      \item 任何函数（数据）的类型在生命周期中保持不变
+      \item 保证所有数据操作的有效性
+      \item 不存在类型转换操作
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{实用性}
+  \framesubtitle{Rat的数据类型}
+  Rat 采用静态数据类型系统，对不同字长的整型数与浮点数提供支持。执行编译期类型检查
   \begin{itemize}
     \item 标量类型
       \begin{itemize}
@@ -105,7 +118,8 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{多态---type class}
+  \frametitle{实用性}
+  \framesubtitle{多态---type class}
   Rat 支持 type class，即某一类具有共同性质的数据类型。支持多态可以避免为不同类型的数据
   分别定义相同的操作。
   \begin{itemize}
@@ -130,7 +144,7 @@
   \lstinputlisting[language=Haskell]{listings/frag-2.hs}
 \end{frame}
 
-\subsection{函数式语言特性}
+\subsection{函数式语言特性：强大的抽象表达能力}
 \frame{\tableofcontents[currentsection, currentsubsection]}
 \begin{frame}
   \frametitle{函数式语言特性}
@@ -160,6 +174,7 @@
   \frametitle{函数式语言特性}
   \framesubtitle{纯函数特性（pure functional）}
   也称“无副作用”（side-effect free），即只要给定同样的输入，就得到同样的输出。
+  lambda演算的理论保证了一个表达式的值与各个子表达式的求值顺序无关。
   side-effect free 可以大大简化程序语义的分析。
   \begin{itemize}
     \item 纯函数举例：\\\texttt{sqrt, pow, exp ...}
@@ -189,21 +204,21 @@
   \frametitle{函数式语言的优势}
   为什么采用函数式语言设计？
   \begin{itemize}
-    \item 语义精确，容易分析\\
-      数值计算领域关注计算，满足“side-effect free”的要求
-    \item 描述问题本身的求解，隐藏计算机实现细节
+    \item 抽象层次高，描述问题本身，隐藏计算机实现细节
+    \item 恒值对象、纯函数特性等性质保证语义精确，容易分析
+    \item 纯函数特性使程序更容易自动并行化
   \end{itemize}
   \pause
   其他编程范式
   \begin{itemize}
     \item 过程式（命令式）语言\\
-      抽象级别低，细节隐藏差
+      抽象级别低，细节隐藏能力差，强迫编程这以计算机的逻辑思考问题
     \item 对象式语言\\
       应用于数值计算领域无优势
   \end{itemize}
 \end{frame}
 
-\subsection{编程界面}
+\subsection{向量原语：简洁易用的编程界面}
 \frame{\tableofcontents[currentsection, currentsubsection]}
 \begin{frame}
   \frametitle{编程界面}
@@ -226,7 +241,7 @@
 
 \begin{frame}[t]
   \frametitle{向量原语}
-  向量原语是并行数据操作的核心
+  向量原语是并行数据操作的核心，Rat保证向量原语在不同硬件平台上的高效实现。
   \only<1>{
     \begin{figure}
       \caption{map}
@@ -268,9 +283,9 @@
 \begin{frame}
   \frametitle{小结：Rat语言的语法特点}
   \begin{itemize}
-    \item 高层的编程界面，数学化的程序表达，适用于数据并行编程问题
-    \item 细节隐藏，消除内存管理、线程管理、消息传递等编程复杂性
-    \item 强静态类型系统，极大降低运行期错误发生的可能性
+    \item 强静态类型系统，极大降低运行期安全性
+    \item 抽象能力强，数学化的程序表达
+    \item 简洁的编程界面，隐藏内存管理、线程管理、消息传递等并行编程细节
   \end{itemize}
 \end{frame}
 
