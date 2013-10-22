@@ -53,7 +53,7 @@
         \item 并行虚拟机：适应GPU硬件结构的并行虚拟机
         \item 异构硬件：CPU与GPU的协同工作技术研究
         \item 并行自动化：内存管理、线程管理、任务划分等并行自动化技术研究
-        \item GPU端优化：存储空间优化以及GPU片上共享存储器的优化技术研究
+        \item GPU端优化：寄存器优化以及GPU片上共享存储器的优化技术研究
       \end{itemize}
   \end{itemize}
 \end{frame}
@@ -175,12 +175,12 @@
   \frametitle{函数式语言特性}
   \framesubtitle{纯函数特性（pure functional）}
   也称“无副作用”（side-effect free），即只要给定同样的输入，就得到同样的输出。
-  lambda演算的理论保证了一个表达式的值与各个子表达式的求值顺序无关。
-  side-effect free 可以大大简化程序语义的分析。
   \begin{itemize}
     \item 纯函数举例：\\\texttt{sqrt, pow, exp ...}
     \item 副作用函数：\\\texttt{printf, readline ...}
   \end{itemize}
+  \pause
+  lambda演算的理论保证了一个表达式的值与各个子表达式的求值顺序无关。
 \end{frame}
 
 \begin{frame}
@@ -199,6 +199,8 @@
   \framesubtitle{恒值对象（immutable object）}
   无赋值操作，一个对象只在被定义的时候赋值，并在之后的生命周期中不再变更
   \lstinputlisting[language=Haskell]{listings/frag-10.hs}
+  \pause
+  恒值对象与纯函数特性可以大大简化程序语义的分析。
 \end{frame}
 
 \begin{frame}
@@ -213,9 +215,9 @@
   其他编程范式
   \begin{itemize}
     \item 过程式（命令式）语言\\
-      抽象级别低，细节隐藏能力差，强迫编程这以计算机的逻辑思考问题
+      抽象级别低，细节隐藏能力差，强迫编程者以计算机的逻辑思考问题
     \item 对象式语言\\
-      应用于数值计算领域无优势
+      应用于数值计算领域无明显优势
   \end{itemize}
 \end{frame}
 
@@ -297,8 +299,8 @@
 \frame{\tableofcontents[currentsection, currentsubsection]}
 
 \begin{frame}
-  \frametitle{前端处理流程}
-  前端处理即源程序的分析过程
+  \frametitle{Rat编译器}
+  Rat编译期是一个以C语言为目标代码的转换器，它的前端处理过程如图
   \begin{figure}
     \caption{Rat前端处理流程}
     \includegraphics<1>[scale=0.3]{images/frontend.png}
@@ -542,7 +544,7 @@
 
 \begin{frame}
   \frametitle{Core语言的优化}
-  Rat程序的优化技术简历在Core语言之上。主要的优化技术包括：
+  Rat程序的优化技术建立在Core语言之上。主要的优化技术包括：
   \begin{itemize}
     \item 存储空间优化
     \item 向量原语聚合（VP fusion）
@@ -609,7 +611,7 @@
 \begin{frame}[t]
   \frametitle{向量原语重排~VP reorder}
   向量原语重排旨在交换可以换序的VP，以提高执行效率
-  \lstinputlisting[language=Haskell]{listings/frag-12.hs}
+  \lstinputlisting[language=Haskell]{listings/frag-17.hs}
   \begin{figure}
     \caption{VP reorder实例}
     \includegraphics<1>[scale=0.33]{images/vp-reorder-1.png}
@@ -662,6 +664,7 @@
 
 \begin{frame}
   \frametitle{CPU/GPU并行执行}
+  开发独立于问题本身的并行能力
   \begin{itemize}
     \item 静态标记\\
       在编译期可以确定那些表达式的求值过程发生在GPU端（一般是向量运算），哪些表达式
