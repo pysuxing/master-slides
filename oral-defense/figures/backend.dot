@@ -1,0 +1,19 @@
+digraph G {
+        node[shape=box];
+        // vm[label="Core Virtual Machine"];
+        rt[label="Runtime System"];
+        scheduler[label="Task Scheduler"];
+        rm[label="Memory Manager"];
+        driver[label="VP Driver"];
+        gpu[label="GPU"];
+        cpu[label="Multi-core Processor", style=dashed];
+        others[label="Other Accelerators", style=dashed];
+
+        // vm -> rt;
+        rt -> scheduler;
+        rt -> rm;
+        rt -> driver;
+        driver -> gpu;
+        driver -> cpu[style=dashed];
+        driver -> others[style=dashed];
+}

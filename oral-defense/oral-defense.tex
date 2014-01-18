@@ -1,0 +1,176 @@
+\documentclass{beamer}
+\mode<presentation>{
+  %% \usetheme[compress]{Berlin}
+}
+%% packages
+\usepackage{zhspacing}
+\zhspacing
+\usepackage{graphics}
+%% meta info
+\title{函数式并行程序语言研究}
+\author[苏醒~pysuxing@gmail.com]{
+\begin{tabular}{ll}
+答辩人： & 苏醒 \\
+指导教师： & 窦文华~教授
+\end{tabular}
+}
+\institute{计算机所641教研室}
+\date{\today}
+
+%% slides
+\begin{document}
+\setlength{\parindent}{0pt}
+
+\section{Background}
+
+\subsection{Parallel and Heterogeneous Hardware}
+\begin{frame}
+  \frametitle{Trends of computing hardware}
+  Processors are no longer going faster ...
+
+  For higher performance, we are harnessing more computers % FIXME: figure here
+
+  and using more CPUs in a single computer % FIXME: figure here
+
+  and put more cores inside a single CPU % FIXME: figure here
+
+  Even more, we orgnize computer systems using different computing hardware.
+
+  %% FIXME: tianhe, pc, tablet
+\end{frame}
+
+\begin{frame}
+  \frametitle{Trends of computing hardware (cont.)}
+  Computer system is becoming:
+  \begin{itemize}
+    \item parallelized
+    \item heterogeneous
+  \end{itemize}
+\end{frame}
+
+\subsection{Parallel Software}
+\begin{frame}
+  \frametitle{Goals of parallel software}
+  We expect parallel software techniques to be
+  \begin{itemize}
+    \item effective\\
+      so hardware power is fully exploited
+    \item easy-to-use\\
+      to program more productively
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{How we program on parallel hardware?}
+  Traditionally, we use multi-threading % FIXME: code here
+
+  and in HPC, MPI is often the choice % FIXME: code here
+
+  or compiler directives such as OpenMP % FIXME: code here
+\end{frame}
+
+\begin{frame}
+  \frametitle{Parallel language as an alternative}
+  Parallel programming has always been hard cause there are so many hardware details to deal with ...
+  \begin{itemize}
+    \item memory
+    \item threads/processes
+    \item communication
+  \end{itemize}
+
+  So parallel programming languages are attractive
+  \begin{itemize}
+    \item parallel syntax structure or parallel funcion primitives
+    \item high level of abstraction
+    \item details transparent to end users
+  \end{itemize}
+\end{frame}
+
+\section{Research}
+\begin{frame}                   % FIXME: consider font size in this frame
+  Rat: A {\Large FUNCTIONAL PARALLEL} Programming Language
+\end{frame}
+
+\begin{frame}
+  \frametitle{Main contributions}
+  \begin{enumerate}
+    \item a functional language design
+    \item a flexible programming model based on vector primitives
+    \item automatical parallelizing technique based on data-flow
+    \item a runtime system exploiting CPU/GPU heterogeneous system
+  \end{enumerate}
+\end{frame}
+
+\subsection{Functional Design}
+\frame{\Large \#1 functional design of Rat}
+
+\begin{frame}
+  \frametitle{``first-class citizen'' functions}
+  Rat has ``first-class citizen'' functions, that is, functions can be
+  \begin{itemize}
+    \item arguments of other functions
+    \item return value of other functions
+    \item anonymous(lambda expression)
+  \end{itemize}
+
+  \emph{FUNCTION = DATA!}             % FIXME: use font color instead of emph here
+\end{frame}
+
+\begin{frame}
+  \frametitle{pure functional}
+  AKA ``side-effect free''. 
+  \begin{definition}
+    A function is side-effect free if it's result depends only on its arguments.
+  \end{definition}
+  \begin{itemize}
+    \item pure functions \\\texttt{sqrt, pow, exp ...}
+    \item side-effect functions \\\texttt{printf, readline ...}
+  \end{itemize}
+  %% \pause
+  %% lambda演算的理论保证了一个表达式的值与各个子表达式的求值顺序无关。
+\end{frame}
+
+\begin{frame}
+  \frametitle{curried functions}
+  Rat's functions are curried
+  \begin{definition}
+    A function is curried if function parameters can be partial instantiated.
+  \end{definition}
+  An other perspect: a n-ary function is regarded as a unary function whose return value
+  is a (n-1)-ary function.
+\end{frame}
+
+\begin{frame}
+  \frametitle{immutable object}
+  Given a value at definition time, an Rat object will hold
+  this value for its whole lifetime
+
+  \emph{No assignment!}         % FIXME, font color
+  %% \pause
+  %% 恒值对象与纯函数特性可以大大简化程序语义的分析。
+\end{frame}
+
+\begin{frame}
+  \frametitle{Why functional?}
+  Advantages of functional languages
+  \begin{itemize}
+    \item high level of abstraction
+    \item simple semantics
+    \item pure functional character makes parallelization easier
+  \end{itemize}
+
+  Other programming paradims
+  \begin{itemize}
+    \item imperative languages\\
+      low abstraction level, hardware
+      抽象级别低，细节隐藏能力差，强迫编程者以计算机的逻辑思考问题
+    \item object-oriented languages\\
+      unsuitable for numeric calculating
+  \end{itemize}
+\end{frame}
+
+\subsection{Programming Model}
+\subsection{Automatical Parallelization}
+\subsection{Runtime System}
+
+\end{document}
