@@ -1,2 +1,3 @@
-master-slides
+scholar-slides
 =============
+all scholar slides
