@@ -1,0 +1,8 @@
+digraph G {
+	node[shape=box];
+	edge[dir=back];
+	Result -> Parameter[style=dashed];
+	mp[label="Matcher<Parameter>"];
+	mr[label="Matcher<Result>"];
+	mp -> mr;
+}

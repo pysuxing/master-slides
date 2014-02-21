@@ -1,0 +1,13 @@
+digraph G {
+        node[shape=box];
+        { rank=same; Base; Root; }
+        { rank=same; Derived; Node1; }
+        { rank=same; Node2; Node3; Node4; Node5; }
+        Base -> Derived[style=dashed, dir=back];
+        Root -> Derived;
+        Root -> Node1;
+        Derived -> Node2;
+        Derived -> Node3;
+        Node1 -> Node4;
+        Node1 -> Node5;
+}

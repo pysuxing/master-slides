@@ -1,0 +1,13 @@
+[
+{
+  "directory": "/home/local/scholar/me/slides/discussion/2014-01-19/listings",
+  "command": "clang -o helloworld helloworld.c -I/usr/local/include -fPIC -Wall -W -Wno-unused-parameter -Wwrite-strings -Wmissing-field-initializers -pedantic -Wno-long-long -Wcovered-switch-default -O3 -DNDEBUG -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -L/usr/local/lib -lrt -ldl -ltinfo -lpthread -lz",
+  "file": "/home/local/scholar/me/slides/discussion/2014-01-19/listings/helloworld.c"
+}
+,
+{
+  "directory": "/home/local/scholar/me/slides/discussion/2014-01-19/listings",
+  "command": "clang -I/usr/local/include -fPIC -Wall -W -Wno-unused-parameter -Wwrite-strings -Wmissing-field-initializers -pedantic -Wno-long-long -Wcovered-switch-default -O3 -DNDEBUG -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -c -o helloworld.o helloworld.c",
+  "file": "/home/local/scholar/me/slides/discussion/2014-01-19/listings/helloworld.c"
+}
+]
