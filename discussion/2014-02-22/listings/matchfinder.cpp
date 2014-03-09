@@ -1,0 +1,1 @@
+ASTConsumer *MatchFinder::newASTConsumer();
