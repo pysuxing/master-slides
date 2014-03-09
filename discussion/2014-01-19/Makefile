@@ -3,7 +3,7 @@ slides.pdf: slides.tex submake
 	xelatex $<
 
 submake:
-	make -C listings
+#	make -C listings
 	make -C figures
 
 view:
