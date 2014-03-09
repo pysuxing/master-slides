@@ -68,8 +68,8 @@
 \begin{frame}
   \frametitle{Checker Interface}
   Clang Static Analyzer provides Checkers an \alert{event-driven}
-  interface. Checkers should implement predefined callbacks to
-  accomplish their tasks
+  interface. Checkers should implement predefined \alert{callbacks}
+  to accomplish their tasks
 
   \pause
   There are 20+ callbacks defined, see \alert{CheckerDocumentation}
@@ -84,19 +84,19 @@
 \begin{frame}
   \frametitle{Interact with Symbolic Execution}
   \framesubtitle{Infomation in ExplodedGraph}
-  Checkers have no states --- all infomation is stored in ExplodedGraph,
-  attached to each ExplodedNode.
+  Checkers have no states --- all infomation is stored
+  in \alert{ExplodedGraph}, attached to each \alert{ExplodedNode}
   \pause
   \begin{itemize}
-    \item ProgramPoint
+    \item \alert{ProgramPoint}
       \begin{itemize}
         \item LocationContext (context data for current position in CFG)
         \item AnalysisDeclContext (context data for the function
           or method under analysis)
       \end{itemize}
-    \item ProgramState
+    \item \alert{ProgramState}
       \begin{itemize}
-        \item Environment (expression to value map)
+        \item \alert{Environment} (expression to value map)
         \item Store (memory region to value map)
         \item GenericDataMap (constraints for current state)
       \end{itemize}
@@ -116,8 +116,8 @@
   \end{itemize}
 
   \pause
-  Sval, SymExpr and MemRegion each has a big hierarchy of inheriting
-  types.
+  \alert{Sval}, \alert{SymExpr} and \alert{MemRegion} each has
+  a big hierarchy of inheriting types.
 \end{frame}
 
 \section{Checker Example}
@@ -131,7 +131,7 @@
 
 \begin{frame}
   \frametitle{Example: DivZeroChecker (cont.)}
-  \lstinputlisting[language=C++, firstline=26, lastline=53]
+  \lstinputlisting[language=C++, firstline=26, lastline=53, firstnumber=22]
                   {listings/DivZeroChecker.cpp}
 \end{frame}
 
