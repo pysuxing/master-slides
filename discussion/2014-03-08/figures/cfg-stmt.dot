@@ -1,0 +1,33 @@
+digraph G {
+	compound=true;
+	node[shape=ellipse, label=""];
+
+	subgraph clusterb1 {
+		s11;
+		label="block 1";
+		color=blue;
+	}
+
+	subgraph clusterb2 {
+		s21;
+		label="block 2";
+		color=blue;
+	}
+
+	subgraph clusterb3 {
+		s31 -> s32;
+		label="block 3";
+		color=blue;
+	}
+
+	subgraph clusterb4 {
+		s41;
+		label="block 4";
+		color=blue;
+	}
+
+	s11 -> s21;
+	s11 -> s31;
+	s21 -> s41;
+	s32 -> s41;
+}

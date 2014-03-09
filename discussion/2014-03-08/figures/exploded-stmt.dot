@@ -1,0 +1,6 @@
+digraph G {
+	node[label="{ProgramState |{environment | constraints}} | ProgramPoint", shape=record];
+	start -> s1[label="checker 1"];
+	s1 -> s2[label="checker 2"];
+	s2 -> end[label="checker 3"];
+}

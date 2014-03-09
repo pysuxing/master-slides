@@ -1,0 +1,171 @@
+\documentclass[]{beamer}
+\mode<presentation>{
+  %% \usetheme[compress]{Berlin}
+}
+%% packages
+\usepackage{zhspacing}
+\zhspacing
+\usepackage{graphics}
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\tiny,
+  numbers=left
+}
+\usepackage{tabularx}
+\usepackage{booktabs}
+%% meta info
+\title{Clang Static Analyzer Architecture}
+%% \subtitle{}
+\author[SuXing~pysuxing@gmail.com]{SuXing}
+\institute{TOW}
+\date{\today}
+
+%% slides
+\begin{document}
+\setlength{\parindent}{0pt}
+
+\frame{\titlepage}
+
+\frame{\tableofcontents}
+
+\section{Overview}
+\frame{\tableofcontents[currentsection]}
+
+\begin{frame}
+  \frametitle{Synopsis}
+  Clang Static Analyzer
+  \begin{itemize}
+    \item is built upon the \alert{CFG}
+    \item use \alert{symbolic execution} to simulate runtime behavior
+    \item has many builtin \alert{Checker}s and can be extended by
+      registering user-defined Checkers
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{CFG \& ExplodedGraph}
+  Clang Static Analyzer's \alert{symbolic execution engine}
+  builds an ExplodedGraph based on CFG
+  \begin{columns}
+    \begin{column}{.5\textwidth}
+      \includegraphics<1>[height=.5\textheight]{figures/cfg-block}
+      \includegraphics<2->[height=.5\textheight]{figures/cfg-stmt}
+    \end{column}
+    \begin{column}{.5\textwidth}
+      \includegraphics<3->[height=.5\textheight]{figures/exploded-stmt}
+    \end{column}
+  \end{columns}
+  \uncover<4->{
+  If any node in ExplodedGraph has conflict between constraints, a
+  \alert{BugTypef} is emited by \alert{BugReporter} and execution
+  along current path is terminated
+}
+\end{frame}
+
+\section{Interface}
+\frame{\tableofcontents[currentsection]}
+
+\begin{frame}
+  \frametitle{Checker Interface}
+  Clang Static Analyzer provides Checkers an \alert{event-driven}
+  interface. Checkers should implement predefined callbacks to
+  accomplish their tasks
+
+  \pause
+  There are 20+ callbacks defined, see \alert{CheckerDocumentation}
+  \begin{itemize}
+    \item PreStmt \& PostStmt
+    \item PreCall \& PostCall
+    \item Bind
+    \item ...
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Interact with Symbolic Execution}
+  \framesubtitle{Infomation in ExplodedGraph}
+  Checkers have no states --- all infomation is stored in ExplodedGraph,
+  attached to each ExplodedNode.
+  \pause
+  \begin{itemize}
+    \item ProgramPoint
+      \begin{itemize}
+        \item LocationContext (context data for current position in CFG)
+        \item AnalysisDeclContext (context data for the function
+          or method under analysis)
+      \end{itemize}
+    \item ProgramState
+      \begin{itemize}
+        \item Environment (expression to value map)
+        \item Store (memory region to value map)
+        \item GenericDataMap (constraints for current state)
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Interact with Symbolic Execution (cont.)}
+  \framesubtitle{Representing Values}
+  Values in symbolic execution are wrapped in \alert{SVal} (symbolic
+  value) which is like a union type. There are 3 kinds of values
+  \pause
+  \begin{itemize}
+    \item ConcreteInt
+    \item SymExpr
+    \item MemRegion
+  \end{itemize}
+
+  \pause
+  Sval, SymExpr and MemRegion each has a big hierarchy of inheriting
+  types.
+\end{frame}
+
+\section{Checker Example}
+\frame{\tableofcontents[currentsection]}
+
+\begin{frame}
+  \frametitle{Example: DivZeroChecker}
+  \lstinputlisting[language=C++, firstline=4, lastline=25]
+                  {listings/DivZeroChecker.cpp}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Example: DivZeroChecker (cont.)}
+  \lstinputlisting[language=C++, firstline=26, lastline=53]
+                  {listings/DivZeroChecker.cpp}
+\end{frame}
+
+\section{Summary}
+\frame{\tableofcontents[currentsection]}
+
+\begin{frame}
+  \frametitle{Summary}
+  \begin{itemize}
+    \item Build ExplodedGraph upon CFG\\
+      all infomation lives in ExplodedGraph
+    \item Event\&Callback interface
+    \item Implement Checkers using symbolic execution infomation\\
+      \alert{to be further explored ...}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{References}
+  \begin{itemize}
+    \item Official Manual\\
+      http://clang-analyzer.llvm.org/checker\_dev\_manual.html
+    \item Doxygen docs \& Source code (uncoverd in this slides)
+      \begin{itemize}
+        \item Sval
+        \item SymExpr
+        \item MemRegion
+        \item ...
+      \end{itemize}
+    \item More Examples (start with ones less than 200 lines of code)\\
+      clang/lib/StaticAnalyzer/Checkers/*Checker.cpp
+  \end{itemize}
+\end{frame}
+
+\frame{\centerline{\Huge Q\&A}}
+
+\end{document}
