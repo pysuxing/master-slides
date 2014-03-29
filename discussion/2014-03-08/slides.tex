@@ -39,6 +39,7 @@
     \item use \alert{symbolic execution} to simulate runtime behavior
     \item has many builtin \alert{Checker}s and can be extended by
       registering user-defined Checkers
+    \item symbolic execution is simple, \alert{not} inter-procedural
   \end{itemize}
 \end{frame}
 
@@ -60,6 +61,20 @@
   \alert{BugTypef} is emited by \alert{BugReporter} and execution
   along current path is terminated
 }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Builtin Checkers}
+  \begin{itemize}
+    \item cplusplus.NewDelete\\
+      double free, use after free, resource leak
+    \item different.ArrayBound\\
+      out of bounds
+    \item core.uninitialized.UndefReturn\\
+      undefined return value
+    \item unix.Malloc\\
+      memory leaks, double free, use-after-free problems involving malloc
+  \end{itemize}
 \end{frame}
 
 \section{Interface}
@@ -152,14 +167,15 @@
 \begin{frame}
 \frametitle{References}
   \begin{itemize}
-    \item Official Manual\\
-      http://clang-analyzer.llvm.org/checker\_dev\_manual.html
+    \item Official Manual
+      \begin{itemize}
+        \item http://clang-analyzer.llvm.org/checker\_dev\_manual.html
+        \item http://clang-analyzer.llvm.org/available\_checks.html
+        \item http://clang-analyzer.llvm.org/potential\_checkers.html
+      \end{itemize}
     \item Doxygen docs \& Source code (uncoverd in this slides)
       \begin{itemize}
-        \item Sval
-        \item SymExpr
-        \item MemRegion
-        \item ...
+        \item Sval, SymExpr, MemRegion
       \end{itemize}
     \item More Examples (start with ones less than 200 lines of code)\\
       clang/lib/StaticAnalyzer/Checkers/*Checker.cpp
