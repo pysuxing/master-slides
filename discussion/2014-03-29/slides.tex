@@ -49,19 +49,19 @@
   \vspace{.5em}\pause
   \begin{columns}
     \begin{column}{.65\textwidth}
-      \begin{tabular}{c|l}
-        stmt & pointers\\
+      \begin{tabular}{c|ccc}
+        stmt & p & q & s \\
         \hline
-        0 &  \\
-        1 &  \\
-        2 & p=\&i \\
-        3 & p=\&i, q=NULL \\
-        4 & p=\&i, q=NULL, s=uninitialized \\
-        5 & p=\&i, q=NULL, s=uninitialized \\
-        6 & p=\&i, q=NULL, s=\&i \\
-        7 & p=\&i, q=NULL, s=uninitialized \\
-        8 & p=\&i, q=NULL, s=NULL \\
-        9 & p=\&i, q=NULL, s=?
+        0 & & & \\
+        1 & & & \\
+        2 & \&i & & \\
+        3 & \&i & NULL & \\
+        4 & \&i & NULL & uninitialized \\
+        5 & \&i & NULL & uninitialized \\
+        6 & \&i & NULL & \&i \\
+        7 & \&i & NULL & uninitialized \\
+        8 & \&i & NULL & NULL \\
+        9 & \&i & NULL & ?
       \end{tabular}
     \end{column}
     \begin{column}{.35\textwidth}
@@ -77,8 +77,15 @@
 
   \only<2>{
     \begin{block}{Example}
-      In null-dereference check, we find set of invalid ones in all defined pointers
-      \centerline{int *p=\&a,*q=NULL,*s $\rightarrow$ \{q,s\}}
+      In Null-Dereference check, we categorilize all pointers to valid ones
+      and invalid ones, i.e. $AV=\{valid, invalid\}$
+      \begin{table}
+        \begin{tabular}{l@{\quad$\rightarrow$\quad}l}
+          int *p=\&a & p=valid \\
+          int *q=NULL & q=invalid \\
+          int *s & s=invalid
+        \end{tabular}
+      \end{table}
     \end{block}
   }
 
@@ -86,20 +93,34 @@
     \vspace{.5em}
     \begin{columns}
       \begin{column}{.65\textwidth}
-        \begin{tabular}{c|cl}
-          stmt & invalid pointers\\
+        \begin{tabular}{c|ccc}
+          stmt & p & q & s \\
           \hline
-          0 & \{\} \\
-          1 & \{\} \\
-          2 & \{\} \\
-          3 & \{q\} \\
-          4 & \{q, s\} \\
-          5 & \{q, s\} \\
-          6 & \{q\} \\
-          7 & \{q, s\} \\
-          8 & \{q, s\} \\
-          9 & \{q, s\}
+          0 & & & \\
+          1 & & & \\
+          2 & valid & & \\
+          3 & valid & invalid & \\
+          4 & valid & invalid & invalid \\
+          5 & valid & invalid & invalid \\
+          6 & valid & invalid & valid \\
+          7 & valid & invalid & invalid \\
+          8 & valid & invalid & invalid \\
+          9 & valid & invalid & \alert{invalid}
         \end{tabular}
+        %% \begin{tabular}{c|cl}
+        %%   stmt & invalid pointers\\
+        %%   \hline
+        %%   0 & \{\} \\
+        %%   1 & \{\} \\
+        %%   2 & \{\} \\
+        %%   3 & \{q\} \\
+        %%   4 & \{q, s\} \\
+        %%   5 & \{q, s\} \\
+        %%   6 & \{q\} \\
+        %%   7 & \{q, s\} \\
+        %%   8 & \{q, s\} \\
+        %%   9 & \{q, s\}
+        %% \end{tabular}
       \end{column}
       \begin{column}{.35\textwidth}
         \lstinputlisting[language=C]{listings/example.c}
@@ -137,6 +158,13 @@
   \vspace{1em}\pause
   Often, we extend AV to a Lattice, so Abstract Function becomes
   $$\alpha : CV \rightarrow L$$
+
+  \pause
+  \begin{block}{Example}
+    In Null-Dereference check, we have
+    $$\alpha(NULL) = invalid, \alpha(uninitialized) = invalid,
+    \alpha(*)=valid$$
+  \end{block}
 \end{frame}
 
 \begin{frame}
@@ -148,13 +176,45 @@
   \vspace{1em}\pause
   We annotate $\sigma$ with an integer representing the statment at which the analysis is done
   $$\sigma_i : Var \rightarrow L$$
+
+  \pause
+  \begin{block}{Example}
+    In Null-Dereference check, we have
+    $$\sigma_9(p) = valid, \sigma_9(q) = invalid,
+    \sigma_9(s)=invalid$$
+  \end{block}
 \end{frame}
 
 \begin{frame}
   \frametitle{Flow Function}
   A \alert{Flow Function} $f$ is the actual procedure doing analysis, it takes a statment(implicitly)
   and an input dataflow infomation and generate an output dataflow infomation
+  $$f[Stmt_i](\sigma_i) \rightarrow \sigma_{i+1}$$
+  written simply as
   $$f(\sigma_i) \rightarrow \sigma_{i+1}$$
+
+  \pause
+  \begin{block}{Example}
+    In Null-Dereference check, we have
+    $$f[int *p=\&a](\sigma)=[p=valid]\sigma$$
+    $$f[int *q=NULL](\sigma)=[q=invalid]\sigma$$
+    $$f[int\ a](\sigma)=\sigma$$
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Put All Together: Dataflow Analysis}
+  A Dataflow Analysis is made up of
+  \begin{itemize}
+    \item A lattice $L$
+    \item An abstration function $\alpha$
+    \item An initial dataflow infomation $\sigma_0$
+    \item A dataflow function $f$
+  \end{itemize}
+
+  \pause
+  and generates a result of following form
+  $$\{\sigma_i | i \in Stmts(P)\}$$
 \end{frame}
 
 \section{Applications}
@@ -162,18 +222,20 @@
 
 \begin{frame}
   \frametitle{Null-Dereference Analysis}
-  In Null-Dereference Analysis, we have
+  In Null-Dereference Analysis, other than $AV=\{valid, invalid\}$,
+  the set representation is often preferable, which means we maintain
+  a set containing all invalid pointers in each program point
   \begin{itemize}
     \item $L=(V, \sqsubseteq, \sqcup)$ where
       \begin{itemize}
-      \item $V=\{p | p is a pointer already declared\}$
+      \item $V=\{p | p \in Ptrs(P)\}$
       \item $\top = V$
       \item $\perp = \emptyset$
       \item $\sqsubseteq = \subseteq$
       \item $\sqcup = \cup$
       \end{itemize}
     \item $\sigma_0 = \emptyset$
-    \item flow function $f_{ND}$ is trivial
+    \item flow function $f_{ND}$ omitted
   \end{itemize}
 \end{frame}
 
@@ -190,8 +252,12 @@
       \item $unknown \sqcup Z = Z, unknown \sqcup N = N, Z \sqcup N = anyvalue$
       \end{itemize}
     \item $\sigma_0(\mu) = unknown$
-    \item flow function $f_{ND}$ is trivial
+    \item flow function $f_{Z}$ omitted trivial
   \end{itemize}
+
+  \pause
+  Note we can also adopt the set representation as in Null-Dereference
+  analysis
 \end{frame}
 
 \section{Implementation}
@@ -202,6 +268,11 @@
   Intuitively, we start analysing from the first statment and go along with CFG path until
   a \alert{fixed point} is reached (the analysis
   information $\sigma_i$ we get at each statement does not change any more)
+
+  \vspace{1em}\pause
+  A fixed point in dataflow analysis is an analysis result
+  $\{\sigma_i | i \in Stmts(P)\}$ that satisifies
+  $$\forall i \in Stmts(P), \sqcup_{j \in Pred(i)}f[j](\sigma_j) \sqsubseteq \sigma_i $$
 
   \vspace{1em}\pause
   The analysis is guaranteed to terminate if the lattice $L$ and flow function $f$ fulfills
@@ -217,8 +288,8 @@
 
   \vspace{1em}\pause
   The travelsal order of CFG matters a lot for efficiency!
-  The analysis should have processed all predecessors of statement $\mu$
-  before processing $\mu$
+  Preferably, the analysis should have
+  processed all predecessors of statement $\mu$ before processing $\mu$
 \end{frame}
 
 %% \section{Termination and Soundness}
