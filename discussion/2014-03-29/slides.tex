@@ -214,24 +214,42 @@
   \begin{figure}
     \includegraphics[width=.65\textwidth]{figures/worklist}
   \end{figure}
+
+  \vspace{1em}\pause
+  The travelsal order of CFG matters a lot for efficiency!
+  The analysis should have processed all predecessors of statement $\mu$
+  before processing $\mu$
 \end{frame}
 
-\section{Termination and Soundness}
-\frame{\tableofcontents[currentsection]}
+%% \section{Termination and Soundness}
+%% \frame{\tableofcontents[currentsection]}
 
-\begin{frame}
+%% \begin{frame}
 
-\end{frame}
+%% \end{frame}
 
 \section{Summary}
 \frame{\tableofcontents[currentsection]}
 
 \begin{frame}
   \frametitle{Summary}
+  \begin{itemize}
+    \item The elements of a Dataflow Analysis\\
+      Lattice, Flow Infomation, Flow Function ...
+    \item Some applications of Dataflow Analysis
+    \item Iterative implementation approach\\
+      The Worklist Algorithm
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{References}
+  \begin{itemize}
+    \item Lecture Notes 1--4 of CMU course ``Program Analysis'' (15-819O)\\
+      http://www.cs.cmu.edu/~aldrich/courses/15-819O-13sp/
+    \item Dataflow Analysis on Wikipedia\\
+      http://en.wikipedia.org/wiki/Data-flow\_analysis
+  \end{itemize}
 \end{frame}
 
 \frame{\centerline{\Huge Q\&A}}
