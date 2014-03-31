@@ -20,6 +20,16 @@
 \institute{TOW}
 \date{\today}
 
+\setbeamercolor{footcolor}{fg=blue,bg=white} % 设置字体和背景颜色
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.126\paperwidth,ht=2.25ex,dp=1ex,right]{footcolor}%      
+       \insertframenumber{} / \inserttotalframenumber\hspace*{5ex}
+    \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
 %% slides
 \begin{document}
 \setlength{\parindent}{0pt}
