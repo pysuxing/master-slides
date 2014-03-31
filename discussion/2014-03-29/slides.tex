@@ -20,6 +20,17 @@
 \institute{TOW}
 \date{\today}
 
+
+\setbeamercolor{footcolor}{fg=blue,bg=white} % 设置字体和背景颜色
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.126\paperwidth,ht=2.25ex,dp=1ex,right]{footcolor}%      
+       \insertframenumber{} / \inserttotalframenumber\hspace*{5ex}
+    \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
 %% slides
 \begin{document}
 \setlength{\parindent}{0pt}
@@ -143,7 +154,7 @@
 
   \vspace{1em}\pause
   There exists a \alert{top} element $\top$ and a \alert{bottom} element $\perp$ in $V$ that satisfies
-  $$\forall \mu \in V, \mu \sqsubseteq T and \perp \sqsubseteq \mu$$
+  $$\forall \mu \in V, \mu \sqsubseteq \top and \perp \sqsubseteq \mu$$
 
   \vspace{1em}\pause
   The join operator $\tau = \mu \sqcup \nu$ is defined as the minimal element in set
@@ -228,7 +239,7 @@
   \begin{itemize}
     \item $L=(V, \sqsubseteq, \sqcup)$ where
       \begin{itemize}
-      \item $V=\{p | p \in Ptrs(P)\}$
+      \item $V=2^{\{p | p \in Ptrs(P)\}}$
       \item $\top = V$
       \item $\perp = \emptyset$
       \item $\sqsubseteq = \subseteq$
@@ -248,11 +259,11 @@
       \item $V=\{Z, N, anyvalue, unknown\}$
       \item $\top = anyvalue$
       \item $\perp = unknown$
-      \item $unknown \sqsubseteq Z \sqsubseteq any-value, unknown \sqsubseteq N \sqsubseteq anyvalue$
+      \item $unknown \sqsubseteq Z \sqsubseteq anyvalue, unknown \sqsubseteq N \sqsubseteq anyvalue$
       \item $unknown \sqcup Z = Z, unknown \sqcup N = N, Z \sqcup N = anyvalue$
       \end{itemize}
     \item $\sigma_0(\mu) = unknown$
-    \item flow function $f_{Z}$ omitted trivial
+    \item flow function $f_{Z}$ omitted
   \end{itemize}
 
   \pause
