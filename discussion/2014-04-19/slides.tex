@@ -8,7 +8,7 @@
 \usepackage{graphics}
 \usepackage{listings}
 \lstset{
-  basicstyle=\ttfamily\tiny,
+  %% basicstyle=\ttfamily\tiny,
   numbers=left
 }
 \usepackage{tabularx}
@@ -44,21 +44,159 @@
   \frametitle{A Simple Example}
   We will use the program fragment below as our example throughout
   this talk
-  %% include code here
+  \pause\vspace{1em}
+  \lstinputlisting[language=C]{listings/example.c}
 \end{frame}
 
 \section{Anderson's Analysis}
 \frame{\tableofcontents[currentsection]}
 
 \begin{frame}
-  \frametitle{}
+  \frametitle{Anderson's Analysis}
+  \framesubtitle{Step 1}
+  \begin{columns}
+    \begin{column}{.4\textwidth}
+      \lstinputlisting[language=C, firstline=1, lastline=1]{listings/example.c}
+      \lstinputlisting[language=C, firstline=2, firstnumber=2]{listings/example.c}
+    \end{column}
+    \begin{column}{.6\textwidth}
+      \includegraphics[width=.6\textwidth]{figures/anderson-1}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Anderson's Analysis}
+  \framesubtitle{Step 2}
+  \begin{columns}
+    \begin{column}{.4\textwidth}
+      \lstinputlisting[language=C, firstline=1, lastline=2]{listings/example.c}
+      \lstinputlisting[language=C, firstline=3, firstnumber=3]{listings/example.c}
+    \end{column}
+    \begin{column}{.6\textwidth}
+      \includegraphics[width=.6\textwidth]{figures/anderson-2}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Anderson's Analysis}
+  \framesubtitle{Step 3}
+  \begin{columns}
+    \begin{column}{.4\textwidth}
+      \lstinputlisting[language=C, firstline=1, lastline=3]{listings/example.c}
+      \lstinputlisting[language=C, firstline=4, firstnumber=4]{listings/example.c}
+    \end{column}
+    \begin{column}{.6\textwidth}
+      \includegraphics[width=.6\textwidth]{figures/anderson-3}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Anderson's Analysis}
+  \framesubtitle{Step 4}
+  \begin{columns}
+    \begin{column}{.4\textwidth}
+      \lstinputlisting[language=C, firstline=1, lastline=4]{listings/example.c}
+      \lstinputlisting[language=C, firstline=5, firstnumber=5]{listings/example.c}
+    \end{column}
+    \begin{column}{.6\textwidth}
+      \includegraphics[width=.6\textwidth]{figures/anderson-4}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Anderson's Analysis}
+  \framesubtitle{Step 5}
+  \begin{columns}
+    \begin{column}{.4\textwidth}
+      \lstinputlisting[language=C, firstline=1, lastline=5]{listings/example.c}
+      \lstinputlisting[language=C, firstline=6, firstnumber=6]{listings/example.c}
+    \end{column}
+    \begin{column}{.6\textwidth}
+      \includegraphics[width=.6\textwidth]{figures/anderson-5}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \section{Steensgaard's Analysis}
 \frame{\tableofcontents[currentsection]}
 
 \begin{frame}
-  \frametitle{}
+  \frametitle{Steensgaard's Analysis}
+  Steensgaard's analysis gets the same result as Anderson's for the first 4 assignment
+  statements, but behaves differently processing statement 5
+\end{frame}
+
+\begin{frame}
+  \frametitle{Steensgaard's Analysis}
+  \framesubtitle{Step 4}
+  \begin{columns}
+    \begin{column}{.4\textwidth}
+      \lstinputlisting[language=C, firstline=1, lastline=4]{listings/example.c}
+      \lstinputlisting[language=C, firstline=5, firstnumber=5]{listings/example.c}
+    \end{column}
+    \begin{column}{.6\textwidth}
+      \includegraphics[width=.6\textwidth]{figures/steensgaard-4}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Steensgaard's Analysis}
+  \framesubtitle{Step 5-A}
+  \begin{columns}
+    \begin{column}{.4\textwidth}
+      \lstinputlisting[language=C, firstline=1, lastline=5]{listings/example.c}
+      \lstinputlisting[language=C, firstline=6, firstnumber=6]{listings/example.c}
+    \end{column}
+    \begin{column}{.6\textwidth}
+      \includegraphics[width=.6\textwidth]{figures/steensgaard-5a}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Steensgaard's Analysis}
+  \framesubtitle{Step 5-B}
+  \begin{columns}
+    \begin{column}{.4\textwidth}
+      \lstinputlisting[language=C, firstline=1, lastline=5]{listings/example.c}
+      \lstinputlisting[language=C, firstline=6, firstnumber=6]{listings/example.c}
+    \end{column}
+    \begin{column}{.6\textwidth}
+      \includegraphics[width=.6\textwidth]{figures/steensgaard-5b}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Steensgaard's Analysis}
+  \framesubtitle{Step 5-C}
+  \begin{columns}
+    \begin{column}{.4\textwidth}
+      \lstinputlisting[language=C, firstline=1, lastline=5]{listings/example.c}
+      \lstinputlisting[language=C, firstline=6, firstnumber=6]{listings/example.c}
+    \end{column}
+    \begin{column}{.6\textwidth}
+      \includegraphics[width=.6\textwidth]{figures/steensgaard-5c}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The Differences}
+  In Steensgaard's analysis, each node has \alert{exactly 1} point-to node
+  \begin{itemize}
+    \item scalibility increased as each complex assignment ``p=*q'', ``*p=q'' can be processed in $O(1)$ time
+      instead of $O(V)$
+    \item the tradeoff: precision lose
+  \end{itemize}
+  \pause
+  While Anderson's analysis has an $O(n^3)$ complexity, the overall complexity of
+  Steensgaard's is only $O(n\alpha(n))$(almost linear)
 \end{frame}
 
 \section{Summary}

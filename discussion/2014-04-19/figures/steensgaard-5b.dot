@@ -1,0 +1,19 @@
+digraph G {
+        rankdir=LR;
+        
+        // p[color=transparent, fontcolor=transparent];
+        // q[color=transparent, fontcolor=transparent];
+        // x[color=transparent, fontcolor=transparent];
+        y[color=transparent, fontcolor=transparent];
+        // a[color=transparent, fontcolor=transparent];
+        // b[color=transparent, fontcolor=transparent];
+
+        x[label="xy"];
+        x -> b;
+
+        p -> x;
+        q -> y[color=transparent];
+        x -> a;
+        y -> b[color=transparent];
+        q -> x;
+}
