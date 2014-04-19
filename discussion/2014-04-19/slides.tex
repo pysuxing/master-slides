@@ -1,0 +1,97 @@
+\documentclass[]{beamer}
+\mode<presentation>{
+  %% \usetheme[compress]{Berlin}
+}
+%% packages
+\usepackage{zhspacing}
+\zhspacing
+\usepackage{graphics}
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\tiny,
+  numbers=left
+}
+\usepackage{tabularx}
+\usepackage{booktabs}
+%% meta info
+\title{Pointer Analysis by Example}
+\subtitle{A Comparation of Anderson's and Steensgaard's Method}
+\author[SuXing~pysuxing@gmail.com]{SuXing}
+\institute{TOW}
+\date{\today}
+
+\setbeamercolor{footcolor}{fg=blue,bg=white} %
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.126\paperwidth,ht=2.25ex,dp=1ex,right]{footcolor}%      
+       \insertframenumber{} / \inserttotalframenumber\hspace*{5ex}
+    \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+%% slides
+\begin{document}
+\setlength{\parindent}{0pt}
+
+\frame{\titlepage}
+\frame{\tableofcontents}
+
+\section{A Simple Example}
+\frame{\tableofcontents[currentsection]}
+
+\begin{frame}
+  \frametitle{A Simple Example}
+  We will use the program fragment below as our example throughout
+  this talk
+  %% include code here
+\end{frame}
+
+\section{Anderson's Analysis}
+\frame{\tableofcontents[currentsection]}
+
+\begin{frame}
+  \frametitle{}
+\end{frame}
+
+\section{Steensgaard's Analysis}
+\frame{\tableofcontents[currentsection]}
+
+\begin{frame}
+  \frametitle{}
+\end{frame}
+
+\section{Summary}
+\frame{\tableofcontents[currentsection]}
+
+\begin{frame}
+  \frametitle{Summary}
+  \begin{table}
+    \begin{tabular}{|c|c|c|}
+      \hline
+      Assignment & Anderson's Constraint & Steensgaard's Constraint\\
+      \hline
+      a = \&b & $a \supseteq \{b\}$ & $a = \{b\}$\\
+      a = b & $a \supseteq b$ & $a = b$\\
+      a = *b & $a \supseteq *b$ & $a = *b$ \\
+      *a = b & $*a \supseteq b$ & $*a = b$\\
+      \hline
+    \end{tabular}
+    \caption{Anderson's v.s. Steensgaard's}
+  \end{table}
+\end{frame}
+
+\begin{frame}
+  \frametitle{References}
+  \begin{itemize}
+    \item Lecture Notes 7 of CMU course ``Program Analysis'' (15-819O)\\
+      http://www.cs.cmu.edu/aldrich/courses/15-819O-13sp/
+    \item Pointer-to Analysis in Almost Linear Time, Steensgaard Bjarne,
+      Proceedings of the 23rd ACM SIGPLAN-SIGACT symposium on Principles of
+      Programming Languages, 1996
+  \end{itemize}
+\end{frame}
+
+\frame{\centerline{\Huge Q\&A}}
+
+\end{document}
