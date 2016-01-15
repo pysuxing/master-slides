@@ -1,0 +1,9 @@
+digraph lu {
+        edge[dir=back];
+
+        GAUSSIAN;
+        GAUSSIAN -> PERM;
+        PERM -> TRSM;
+        TRSM -> GEMM;
+        GEMM -> LU;
+}

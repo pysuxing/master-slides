@@ -1,0 +1,14 @@
+digraph machine {
+        node[shape=box];
+        edge[arrowhead=none];
+        subgraph clustercpu {
+                style="dashed";
+                color=blue;
+                label="CPU";
+                core[shape=ellipse];
+                cache[width=1];
+        }
+        core -> cache;
+        cache -> memory;
+        memory[width=3];
+}

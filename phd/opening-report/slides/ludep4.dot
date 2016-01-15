@@ -1,0 +1,65 @@
+digraph lu {
+        edge[dir=back];
+        
+        GAUSSIAN;
+        subgraph clusterperm {
+                rank=same;
+                node[label="PERM"]
+                PERM0;
+                PERM1;
+        }
+        GAUSSIAN -> PERM0;
+        GAUSSIAN -> PERM1;
+        subgraph clustertrsm {
+                node[label="TRSM"];
+                TRSM0;
+                TRSM1;
+        }
+        PERM0 -> TRSM0;
+        PERM1 -> TRSM1;
+        subgraph clustergemm {
+                node[label="GEMM"];
+                GEMM0;
+                GEMM1;
+                GEMM2;
+                GEMM3;
+        }
+        TRSM0 -> GEMM0;
+        TRSM0 -> GEMM1;
+        TRSM1 -> GEMM2;
+        TRSM1 -> GEMM3;
+
+        subgraph clusterlu1 {
+                GAUSSIAN_1[label="GAUSSIAN"];
+                PERM_1[label="PERM"];
+                TRSM_1[label="TRSM"];
+                GEMM_1[label="GEMM"]
+                GAUSSIAN_1 -> PERM_1;
+                PERM_1 -> TRSM_1;
+                TRSM_1 -> GEMM_1;
+                subgraph clusterlu2 {
+                        GAUSSIAN_2[label="GAUSSIAN"];
+                }
+                GEMM_1 -> GAUSSIAN_2;
+        }
+        GEMM0 -> GAUSSIAN_1;
+        GEMM1 -> GAUSSIAN_1;
+        GEMM2 -> PERM_1;
+        GEMM3 -> PERM_1;
+
+        // schedule
+        edge[dir=forward, color=red, style=dashed, constraint=false];
+        GAUSSIAN -> PERM0;
+        PERM0 -> PERM1;
+        PERM1 -> TRSM0;
+        TRSM0 -> TRSM1;
+        TRSM1 -> GEMM0;
+        GEMM0 -> GEMM1;
+        GEMM1 -> GEMM2;
+        GEMM2 -> GEMM3;
+        GEMM3 -> GAUSSIAN_1;
+        GAUSSIAN_1 -> PERM_1;
+        PERM_1 -> TRSM_1;
+        TRSM_1 -> GEMM_1;
+        GEMM_1 -> GAUSSIAN_2;
+}

@@ -1,0 +1,31 @@
+digraph lu {
+        edge[dir=back];
+
+        compound=true;
+        
+        GAUSSIAN;
+        subgraph clusterperm {
+                node[label="PERM"]
+                PERM0;
+                permanchor[shape=none,label="",fixedsize=true,width=0,height=0];
+                PERM1;
+        }
+        GAUSSIAN -> permanchor[lhead=clusterperm];
+        subgraph clustertrsm {
+                node[label="TRSM"];
+                TRSM0;
+                trsmanchor[shape=none,label="",fixedsize=true,width=0,height=0];
+                TRSM1;
+        }
+        permanchor -> trsmanchor[lhead=clustertrsm, ltail=clusterperm];
+        subgraph clustergemm {
+                node[label="GEMM"];
+                GEMM0;
+                GEMM1;
+                gemmanchor[shape=none,label="",fixedsize=true,width=0,height=0];
+                GEMM2;
+                GEMM3;
+        }
+        trsmanchor -> gemmanchor[lhead=clustergemm, ltail=clustertrsm];
+        gemmanchor -> LU[ltail=clustergemm];
+}

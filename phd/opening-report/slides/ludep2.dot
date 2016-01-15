@@ -1,0 +1,35 @@
+digraph lu {
+        edge[dir=back];
+
+        GAUSSIAN;
+        subgraph clusterperm {
+                node[label="PERM"]
+                PERM0;
+                PERM1;
+        }
+        GAUSSIAN -> PERM0;
+        GAUSSIAN -> PERM1;
+        subgraph clustertrsm {
+                node[label="TRSM"];
+                TRSM0;
+                TRSM1;
+        }
+        PERM0 -> TRSM0;
+        PERM1 -> TRSM1;
+        subgraph clustergemm {
+                node[label="GEMM"];
+                GEMM0;
+                GEMM1;
+                GEMM2;
+                GEMM3;
+        }
+        TRSM0 -> GEMM0;
+        TRSM0 -> GEMM1;
+        TRSM1 -> GEMM2;
+        TRSM1 -> GEMM3;
+        LU;
+        GEMM0 -> LU;
+        GEMM1 -> LU;
+        GEMM2 -> LU;
+        GEMM3 -> LU;
+}
