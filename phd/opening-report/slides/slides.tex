@@ -448,10 +448,10 @@
   \end{itemize}
 \end{frame}
 
-\subsection[并行可扩展性研究]{面向多核及众核处理器的并行优化技术研究}
+\subsection[并行可扩展性研究]{面向众核处理器的并行优化技术研究}
 
 \begin{frame}
-  \frametitle{面向多核及众核处理器的并行优化技术研究}
+  \frametitle{面向众核处理器的并行优化技术研究}
   \begin{itemize}
   \item 问题描述
     \begin{itemize}
@@ -460,10 +460,10 @@
       \item 超线程
       \item 一维并行划分可扩展性差
       \end{itemize}
-    \item 一些处理器不符合简单的inclusive cache存储层次结构假设
+    \item 众核处理器不符合简单的inclusive cache存储层次结构模型
       \begin{itemize}
-      \item 小容量exclusive LLC（FT-1500A）
-      \item 众核处理器的互联cache（KNC/KNL）
+      \item 小容量exclusive LLC（FT series）
+      \item 网络互联cache（KNC/KNL）
       \end{itemize}
     \end{itemize}
   \item 研究现状
@@ -476,32 +476,37 @@
       \begin{itemize}
       \item BLIS
       \end{itemize}
-    \item 二维并行代替一维并行
-      \begin{itemize}
-      \item BLIS
-      \end{itemize}
     \item 编译指导代码变换
       \begin{itemize}
       \item POET
+      \end{itemize}
+    \item 二维并行代替一维并行
+      \begin{itemize}
+      \item BLIS
       \end{itemize}
     \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{面向多核及众核处理器的并行优化技术研究}
+  \frametitle{面向众核处理器的并行优化技术研究}
   \begin{itemize}
   \item 研究思路
     \begin{itemize}
+    \item 最优划分调度策略主要由存储体系结构特性决定
+      \begin{itemize}
+      \item 拓扑
+      \item 一致性协议
+      \end{itemize}
     \item 分层考虑存储层次结构中的计算与数据传输过程，
       \begin{itemize}
       \item 下层存储器根据上层存储器特性进行任务划分
       \item 上层存储器对下层存储器提交的任务进行调度
       \end{itemize}
-    \item 最优划分调度策略可以看作存储器的附加属性
     \end{itemize}
   \item 预期创新点
     \begin{itemize}
+    \item 用于商用众核处理器KNC/KNL及国产众核处理器FT-2000的并行优化技术
     \item 适用于复杂存储层次结构的的性能分析模型
     \item 性能分析模型下的整体优化策略自动生成
     \end{itemize}
