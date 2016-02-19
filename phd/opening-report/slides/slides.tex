@@ -386,7 +386,7 @@
   \frametitle{研究内容}
   \begin{itemize}
   \item 针对稠密线性代数运算的编译优化技术研究
-  \item 面向众核处理器的并行优化技术研究
+  \item 面向众核处理器的矩阵乘法并行优化技术研究
   \item 适用于一般稠密线性代数问题的全局优化技术研究
   \item 面向稠密线性代数的领域语言研究
   \end{itemize}
@@ -448,10 +448,10 @@
   \end{itemize}
 \end{frame}
 
-\subsection[并行可扩展性研究]{面向众核处理器的并行优化技术研究}
+\subsection[并行可扩展性研究]{面向众核处理器的矩阵乘法并行优化技术研究}
 
 \begin{frame}
-  \frametitle{面向众核处理器的并行优化技术研究}
+  \frametitle{面向众核处理器的矩阵乘法并行优化技术研究}
   \begin{itemize}
   \item 问题描述
     \begin{itemize}
@@ -513,6 +513,8 @@
   \end{itemize}
 \end{frame}
 
+%% \subsection[性能模型研究]{线性代数数学库核心函数性能模型研究}
+
 \subsection[全局优化技术研究]{一般稠密线性代数问题的全局优化技术研究}
 
 \begin{frame}
@@ -520,7 +522,7 @@
   \begin{itemize}
   \item 问题描述
     \begin{itemize}
-    \item 通过组合库函数调用的方式编写程序缺乏全局优化 %example
+    \item 通过组合库函数调用的方式编写程序缺乏全局优化
     \item 函数库的接口限制造成的数据拷贝、转存附加开销
     \end{itemize}
   \item 研究现状
