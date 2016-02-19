@@ -206,11 +206,26 @@
   \framesubtitle{指令级并行}
   \begin{itemize}
   \item 流水线
-  \item 多发射/动态调度/乱序执行
+  \item 多发射
+  \item 动态调度
+  \item 乱序执行
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{多层次的并行计算能力}
+  \framesubtitle{数据级并行}
+  \begin{itemize}
   \item SIMD指令
-    \begin{itemize}             % a table or figure here?
-    \item MMX/SSE/SSE2/SSE3/SSE4/AVX/AVX2/AVX512
-    \item NEON
+    \begin{itemize}
+    \item X86
+      \begin{itemize}
+      \item MMX/SSE/SSE2/SSE3/SSE4/AVX/AVX2/AVX512
+      \end{itemize}
+    \item ARM
+      \begin{itemize}
+      \item NEON
+      \end{itemize}
     \end{itemize}
   \end{itemize}
   \begin{figure}
@@ -245,9 +260,9 @@
   \item “存储墙”：存储器速度增长落后于计算能力增长 % figure
   \item 存储层次结构趋于复杂
     \begin{itemize}
-    \item inclusive/exclusive的区别
+    \item inclusive/exclusive
     \item 互联网络实现的一致性
-    \item 非一致性cache访问
+    \item 非一致性cache访问(NUCA)
     \end{itemize}
   \end{itemize}
   \begin{figure}
@@ -265,7 +280,7 @@
     \begin{itemize}             %figure instead?
     \item BLAS（1970s-1980s）
     \item EISPACK（1970s-1980s）
-    \item LINPACK
+    \item LINPACK（1970s-1980s）
     \item LAPACK（1990s）
     \end{itemize}
   \end{itemize}
