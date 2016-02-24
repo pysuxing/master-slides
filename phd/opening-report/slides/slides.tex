@@ -338,13 +338,13 @@
       \begin{itemize}
       \item 更高的线程并行度
         \begin{itemize}
-        \item 多核/众核
+        \item 众核
         \item 超线程
         \end{itemize}
       \item 更复杂的存储层次结构
         \begin{itemize}
-        \item 一致性对性能的影响
-        \item NUCA对性能的影响
+        \item 一致性协议
+        \item NUCA
         \end{itemize}
       \end{itemize}
     \end{column}
@@ -377,6 +377,9 @@
     \item 非连续存储
     \end{itemize}
   \item 额外的数据拷贝与转存造成性能损失
+    \begin{itemize}
+    \item 应用实例：张量-矩阵乘法
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -436,14 +439,14 @@
     \begin{itemize}
     \item 总结专家知识，定位影响性能的关键要素
       \begin{itemize}
-      \item 体系结构特性：核心指令种类、延迟、处理器部件占用情况等
-      \item 微体系结构特性：指令调度器、功能部件种类及数目等
+      \item 体系结构特性：核心指令
+      \item 微体系结构特性：指令调度器、指令延迟、功能部件等
       \end{itemize}
     \item 基于开源编译器框架，实现针对kernel函数的最优代码生成
     \end{itemize}
   \item 预期创新点
     \begin{itemize}
-    \item 稠密线性代数关键函数的性能分析模型
+    \item 稠密线性代数核心函数的性能模型
     \item 针对稠密线性代数问题的编译优化技术
     \end{itemize}
   \end{itemize}
@@ -509,7 +512,7 @@
     \end{itemize}
   \item 预期创新点
     \begin{itemize}
-    \item 适用于复杂存储层次结构的的矩阵乘法性能分析模型
+    \item 适用于复杂存储层次结构的矩阵乘法性能模型
     \item 用于商用众核处理器KNC/KNL及国产飞腾众核处理器并行优化技术
     %% \item 性能分析模型下的整体优化策略自动生成
     \end{itemize}
@@ -547,7 +550,7 @@
     \item 常见的稠密线性代数问题的求解可以通过少量基本矩阵操作组合得到
       \begin{itemize}
       \item 逐点操作
-      \item 规约操作
+      \item 归约操作
       \item 矩阵乘法
       \item 高斯消元
       \end{itemize}
@@ -555,12 +558,13 @@
       \begin{itemize}
       \item 适合在存储层次结构上作分块映射
       \end{itemize}
-    \item 基于上一研究点提出的性能分析模型提出全局优化方法
-    \item 全局优化过程中选择合适的存储层次执行数据拷贝与转存，最小化性能损失
+    \item 提出适用于一般线性代数问题的性能模型，基于此模型优化性能
+    \item 选择合适的存储层次执行数据拷贝与转存，最小化性能损失
     \end{itemize}
   \item 预期创新点
     \begin{itemize}
-    \item 适用于一般稠密线性代数问题的全局优化技术
+    \item 适用于一般稠密线性代数问题的性能模型
+    \item 适用于一般稠密线性代数问题的优化技术
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -600,7 +604,8 @@
     \begin{itemize}
     \item 基于前述的研究内容，设计面向大规模稠密线性代数的领域语言
       \begin{itemize}
-      \item 抽象层次高，表达简洁
+      \item 原语操作
+      \item 算法描述：原语组合+递归
       \item 符合现代处理器体系结构特点，易于映射
       \item 支持C语言调用
       \end{itemize}
